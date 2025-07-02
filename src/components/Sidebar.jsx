@@ -1,8 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import AuthController from "../controllers/AuthController";
 
 function Sidebar() {
   const activeClass = "flex items-center gap-3 px-4 py-2 rounded-lg mb-2 transition text-gray-700 bg-gray-100";
   const baseClass = "flex items-center gap-3 px-4 py-2 rounded-lg mb-2 transition text-gray-700 hover:bg-gray-100";
+
+  const logout = AuthController((state) => state.logout);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <div className="fixed top-0 left-0 h-screen w-64 bg-white shadow-md flex flex-col justify-between z-10">
@@ -31,7 +40,7 @@ function Sidebar() {
       </div>
 
       <div className="px-4 pb-6">
-        <button className="w-full gap-3 px-4 py-3 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition">
+        <button className="w-full gap-3 px-4 py-3 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition" onClick={handleLogout}>
           <span>
             <i className="fa-regular fa-left-from-bracket"></i> Logout
           </span>
