@@ -1,0 +1,24 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+function PageTitle() {
+    const location = useLocation();
+
+    useEffect(() => {
+        const titles = {
+            "/": "Home | TodoBee",
+            "/about": "About | TodoBee",
+            "/contact": "Contact | TodoBee",
+            "/login": "Login | TodoBee",
+            "/register": "Register | TodoBee",
+            "/dashboard": "Dashboard | TodoBee",
+            "/todo-list": "Todo List | TodoBee",
+        };
+
+        document.title = titles[location.pathname] || "TodoBee";
+    }, [location]);
+
+    return null;
+};
+
+export default PageTitle;
