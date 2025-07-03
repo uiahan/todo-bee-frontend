@@ -236,54 +236,61 @@ function TodoListDetail() {
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {columns.map((col) => (
-            <Droppable key={col.key} droppableId={col.key}>
-              {(provided) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  className="bg-white rounded-md p-5 min-h-[200px]"
-                >
-                  <h2 className="font-semibold text-center text-xl text-gray-600 mb-3">
-                    {col.title}
-                  </h2>
-                  <hr className="text-gray-300 mb-4" />
+            <div className="bg-white rounded-md p-5 min-h-[200px] flex flex-col">
+              {/* Bagian Judul dan Garis */}
+              <h2 className="font-semibold text-center text-xl text-gray-600 mb-3">
+                {col.title}
+              </h2>
+              <hr className="text-gray-300 mb-4" />
 
-                  {tasks[col.key].map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="bg-gray-100 px-4 py-2 mb-3 flex justify-between items-center rounded-md shadow-sm"
-                        >
-                          <p className="text-gray-600">{item.text}</p>
-                          <div className="flex space-x-2">
-                            <button
-                              className="text-blue-600 text-xl"
-                              onClick={() => openEditModal(item)}
-                            >
-                              <i className="fa-regular fa-pen-to-square"></i>
-                            </button>
-                            <button
-                              onClick={() => handleDeleteSubtask(item.id)}
-                              className="text-red-600 text-xl"
-                            >
-                              <i className="fa-regular fa-trash"></i>
-                            </button>
+              {/* Bagian yang bisa di-drop */}
+              <Droppable droppableId={col.key}>
+                {(provided, snapshot) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    className={`flex-1 space-y-3 transition-all ${
+                      snapshot.isDraggingOver ? "bg-blue-100 rounded-md" : ""
+                    }`}
+                    style={{ minHeight: "50px" }} // agar tetap bisa menerima drop meski kosong
+                  >
+                    {tasks[col.key].map((item, index) => (
+                      <Draggable
+                        key={item.id}
+                        draggableId={item.id}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className="bg-gray-100 px-4 py-2 flex justify-between items-center rounded-md shadow-sm"
+                          >
+                            <p className="text-gray-600">{item.text}</p>
+                            <div className="flex space-x-2">
+                              <button
+                                className="text-blue-600 text-xl"
+                                onClick={() => openEditModal(item)}
+                              >
+                                <i className="fa-regular fa-pen-to-square"></i>
+                              </button>
+                              <button
+                                onClick={() => handleDeleteSubtask(item.id)}
+                                className="text-red-600 text-xl"
+                              >
+                                <i className="fa-regular fa-trash"></i>
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </div>
           ))}
         </div>
       </DragDropContext>

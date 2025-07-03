@@ -55,7 +55,7 @@ function Setting() {
       </div>
 
       <div className="grid grid-cols-3">
-        <div className="bg-white mb-6 py-5 px-5 rounded-md">
+        <div className="bg-white mb-6 py-5 px-5 rounded-md" data-aos="fade-up">
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="block text-gray-600 mb-1">Password Saat Ini</label>
