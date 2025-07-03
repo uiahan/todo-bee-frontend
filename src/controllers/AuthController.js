@@ -2,11 +2,17 @@ import axios from "axios";
 import { create } from "zustand";
 
 const baseUrl = import.meta.env.VITE_API_URL;
+const savedToken = localStorage.getItem("token");
+const savedUserRaw = localStorage.getItem("user");
+const savedUser = savedUserRaw && savedUserRaw !== "undefined" ? JSON.parse(savedUserRaw) : null;
+
 
 const AuthController = create((set) => ({
-  user: null,
-  token: null,
+  user: savedUser,
+  token: savedToken || null,
   error: null,
+
+  setUser: (user) => set(() => ({ user })),
 
   login: async (email, password, navigate) => {
     try {
@@ -17,10 +23,12 @@ const AuthController = create((set) => ({
       const { token, user } = res.data;
       set({ token, user, error: null });
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
       navigate("/dashboard");
     } catch (err) {
       set({ error: err.response?.data?.message || "Terjadi kesalahan" });
+      throw err;
     }
   },
 
@@ -35,17 +43,17 @@ const AuthController = create((set) => ({
 
       const user = res.data.user;
       set({ user, error: null });
-      navigate('/login');
+      navigate("/login");
     } catch (err) {
       const errorMsg =
-      err.response?.data?.errors?.email?.[0] ||
-      err.response?.data?.errors?.password?.[0] ||
-      err.response?.data?.message || "Terjadi kesalahan saat register";
+        err.response?.data?.errors?.email?.[0] ||
+        err.response?.data?.errors?.password?.[0] ||
+        err.response?.data?.message ||
+        "Terjadi kesalahan saat register";
 
       set({ error: errorMsg });
     }
   },
-  
 }));
 
 export default AuthController;

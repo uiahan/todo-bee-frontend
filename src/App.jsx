@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 function App() {
   return (
     <>
-      <div className="bg-gray-50 min-h-screen py-10 2xl:py-20 2xl:px-60 px-6">
+      <div className="bg-gray-100 min-h-screen py-10 2xl:py-20 2xl:px-60 px-6">
         <div className="text-center xl:pt-56">
           <h1 className="font-bold xl:text-6xl" data-aos="fade-up">
             <span className="text-blue-600">Kelola tugas</span> harianmu dengan <span className="text-blue-600">cara yang</span> lebih mudah <span className="text-blue-600">dan teratur</span>
@@ -12,12 +14,12 @@ function App() {
             platform yang terintegrasi dan mudah digunakan.
           </h4>
           <div data-aos="fade-up" data-aos-duration="1400">
-          <a 
-            href="#"
+          <Link
+            to="/login"
             className="bg-blue-600 font-semibold text-white px-10 text-2xl py-2 shadow-lg rounded-3xl hover:bg-blue-700 transition-colors"
           >
             Mulai Sekarang
-          </a>
+          </Link>
             
           </div>
         </div>
@@ -69,7 +71,7 @@ function App() {
         </div>
       </div>
 
-      <div className="bg-gray-50 2xl:py-40 2xl:px-60 grid grid-cols-2 space-x-16" data-aos="fade-up">
+      <div className="bg-gray-100 2xl:py-40 2xl:px-60 grid grid-cols-2 space-x-16" data-aos="fade-up">
         <div>
           <img
             src="/src/assets/time-organization-concept-with-planner-top-view.jpg"

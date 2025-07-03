@@ -13,6 +13,8 @@ function PageTitle() {
             "/register": "Register | TodoBee",
             "/dashboard": "Dashboard | TodoBee",
             "/todo-list": "Todo List | TodoBee",
+            "/todo-list-detail": "Todo List Detail | TodoBee",
+            "/setting": "Setting | TodoBee",
         };
 
         document.title = titles[location.pathname] || "TodoBee";

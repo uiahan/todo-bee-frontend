@@ -18,7 +18,7 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white shadow-lg w-5xl grid grid-cols-2 rounded-3xl">
         <div className="bg-blue-600 rounded-l-3xl flex justify-center items-center">
           <Link to="/" className="text-6xl text-white font-bold">

@@ -5,7 +5,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md fixed w-full top-0 left-0 z-50">
+    <nav className="bg-white fixed w-full top-0 left-0 z-50">
       <div className="flex items-center justify-between py-5 px-6 md:px-60">
         <div className="flex space-x-10 items-center">
           <div className="font-semibold text-3xl text-gray-800">TodoBee</div>

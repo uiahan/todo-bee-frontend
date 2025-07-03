@@ -8,6 +8,10 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Contact from "../pages/Contact";
 import About from "../pages/About";
 import TodoList from "../pages/dashboard/TodoList";
+import ProtectedRoute from "./ProtectedRoute";
+import TodoListDetail from "../pages/dashboard/TodoListDetail";
+import Profile from "../pages/dashboard/Profile";
+import Setting from "../pages/dashboard/Setting";
 
 function AppRoute() {
   return (
@@ -19,9 +23,14 @@ function AppRoute() {
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route element={<DashboardLayout />}>
+      <Route element={<ProtectedRoute>
+        <DashboardLayout />
+      </ProtectedRoute>}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/todo-list" element={<TodoList />} />
+        <Route path="/todo-list-detail/:id" element={<TodoListDetail />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/setting" element={<Setting />} />
       </Route>
     </Routes>
   );
