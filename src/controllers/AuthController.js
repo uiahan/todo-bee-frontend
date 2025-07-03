@@ -22,6 +22,7 @@ const AuthController = create((set) => ({
       });
       const { token, user } = res.data;
       set({ token, user, error: null });
+      localStorage.setItem("user_status", user.status);
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 

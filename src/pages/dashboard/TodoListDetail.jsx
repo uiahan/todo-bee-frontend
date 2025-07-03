@@ -236,7 +236,7 @@ function TodoListDetail() {
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {columns.map((col) => (
-            <div className="bg-white rounded-md p-5 min-h-[200px] flex flex-col">
+            <div className="bg-white rounded-md p-5 min-h-[200px] flex flex-col" key={col.key}>
               {/* Bagian Judul dan Garis */}
               <h2 className="font-semibold text-center text-xl text-gray-600 mb-3">
                 {col.title}
@@ -252,7 +252,7 @@ function TodoListDetail() {
                     className={`flex-1 space-y-3 transition-all ${
                       snapshot.isDraggingOver ? "bg-blue-100 rounded-md" : ""
                     }`}
-                    style={{ minHeight: "50px" }} // agar tetap bisa menerima drop meski kosong
+                    style={{ minHeight: "50px" }}
                   >
                     {tasks[col.key].map((item, index) => (
                       <Draggable

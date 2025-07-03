@@ -11,8 +11,8 @@ function Profile() {
   });
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [loading, setLoading] = useState(true); // <- state loading
-
+  const [loading, setLoading] = useState(true); 
+  
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -32,7 +32,7 @@ function Profile() {
       } catch (err) {
         console.error("Gagal memuat profil", err);
       } finally {
-        setLoading(false); // ← selesai loading
+        setLoading(false);
       }
     };
 

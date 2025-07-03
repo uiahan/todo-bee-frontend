@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthController from "../controllers/AuthController";
 import Swal from "sweetalert2";
-import { useEffect } from "react";
 
 function Sidebar() {
   const location = useLocation();
@@ -9,16 +8,12 @@ function Sidebar() {
   const activeClass =
     "flex items-center gap-3 px-4 py-2 rounded-lg mb-2 transition text-blue-700 bg-blue-100";
   const baseClass =
-    "flex items-center gap-3 px-4 py-2 rounded-lg mb-2 transition text-blue-700 hover:bg-blue-100";
+    "flex items-center gap-3 px-4 py-2 rounded-lg mb-2 transition text-gray-700 hover:bg-blue-100";
 
   const logout = AuthController((state) => state.logout);
   const navigate = useNavigate();
 
   const user = AuthController((state) => state.user);
-
-  useEffect(() => {
-    console.log("Sidebar user updated", user);
-  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -51,7 +46,7 @@ function Sidebar() {
             alt="Profile"
             className="w-24 h-24 rounded-full object-cover border-2 border-blue-600 mb-2"
           />
-          <p className="text-gray-700 font-semibold text-sm">
+          <p className="text-gray-600 font-medium text-sm">
             Hallo, {user?.name || ""}
           </p>
         </div>
