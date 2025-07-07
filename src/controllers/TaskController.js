@@ -80,6 +80,54 @@ const TaskController = create((set) => ({
     }
   },
 
+  statusDone: async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.put(`${api}/task/status/done/${id}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      set((state) => ({
+        task: state.task.map((t) =>
+          t.id === id ? { ...t, status: "done" } : t
+        ),
+      }));
+
+      return res.data;
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Gagal mengubah status task";
+      set({ error: message });
+    }
+  },
+
+  statusPending: async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.put(`${api}/task/status/pending/${id}`, null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      set((state) => ({
+        task: state.task.map((t) =>
+          t.id === id ? { ...t, status: "pending" } : t
+        ),
+      }));
+
+      return res.data;
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Gagal mengubah status task";
+      set({ error: message });
+    }
+  },
+
   clearMessage: () => set({ error: null, success: null }),
 }));
 

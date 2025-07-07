@@ -11,8 +11,8 @@ function Profile() {
   });
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [loading, setLoading] = useState(true); 
-  
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -47,6 +47,15 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    Swal.fire({
+      title: "Menyimpan...",
+      text: "Mohon tunggu sebentar",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     try {
       const token = localStorage.getItem("token");
       const formData = new FormData();
@@ -73,13 +82,29 @@ function Profile() {
       const updateUser = AuthController.getState().setUser;
       updateUser(updatedUser);
 
-      Swal.fire("Sukses", "Profil berhasil diperbarui", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Profile berhasil di perbarui",
+      });
     } catch {
-      Swal.fire("Gagal", "Terjadi kesalahan saat update", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Terjadi kesalahan, coba lagi nanti",
+      });
     }
   };
 
   const handleDeleteAvatar = async () => {
+    Swal.fire({
+      title: "Menghapus...",
+      text: "Mohon tunggu sebentar",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${import.meta.env.VITE_API_URL}/user/delete-avatar`, {
@@ -98,22 +123,33 @@ function Profile() {
       setAvatarPreview(null);
       setAvatarFile(null);
 
-      Swal.fire("Berhasil", "Avatar dihapus", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Avatar berhasil dihapus",
+      });
     } catch {
-      Swal.fire("Gagal", "Gagal menghapus avatar", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Terjadi kesalahan, coba lagi nanti",
+      });
     }
   };
 
   return (
     <>
-      <div className="bg-white mb-6 py-5 px-5 rounded-md">
-        <h1 className="font-bold text-2xl text-gray-600">My Profile</h1>
+      <div className="bg-gray-900 mb-6 py-5 px-5 rounded-md">
+        <h1 className="font-bold text-2xl text-white">My Profile</h1>
       </div>
 
-      <div className="grid grid-cols-3">
-        <div className="bg-white mb-6 py-5 px-5 rounded-md min-h-[300px] flex items-center justify-center" data-aos="fade-up">
+      <div className="grid xl:grid-cols-3 grid-cols-1">
+        <div
+          className="bg-gray-900 mb-6 py-5 px-5 rounded-md min-h-[300px] flex items-center justify-center"
+          data-aos="fade-up"
+        >
           {loading ? (
-            <span className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></span>
+            <span className="w-8 h-8 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></span>
           ) : (
             <form onSubmit={handleSubmit} className="w-full">
               <div className="mb-3">
@@ -125,41 +161,41 @@ function Profile() {
               </div>
 
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">Name</label>
+                <label className="block text-white mb-1">Name</label>
                 <input
                   type="text"
                   value={user.name}
                   onChange={(e) => setUser({ ...user, name: e.target.value })}
-                  className="w-full border px-3 py-1 rounded"
+                  className="w-full border border-white text-white px-3 py-1 rounded"
                   required
                 />
               </div>
 
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">Email</label>
+                <label className="block text-white mb-1">Email</label>
                 <input
                   type="email"
                   value={user.email}
                   onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  className="w-full border px-3 py-1 rounded"
+                  className="w-full border border-white text-white px-3 py-1 rounded"
                   required
                 />
               </div>
 
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">Avatar</label>
+                <label className="block text-white mb-1">Avatar</label>
                 <input
                   type="file"
                   onChange={handleAvatarChange}
                   accept="image/*"
-                  className="w-full border px-3 py-1 rounded"
+                  className="w-full border border-white text-white px-3 py-1 rounded"
                 />
               </div>
 
               <div className="mb-3 flex space-x-3">
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors px-3 py-1 rounded-sm"
+                  className="bg-yellow-400 hover:bg-yellow-500 text-white font-medium transition-colors px-3 py-1 rounded-sm"
                 >
                   Save Changes
                 </button>

@@ -5,16 +5,15 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-white fixed w-full top-0 left-0 z-50">
+    <nav className="bg-gray-900 fixed w-full top-0 left-0 z-50">
       <div className="flex items-center justify-between py-5 px-6 md:px-60">
-        <div className="flex space-x-10 items-center">
-          <div className="font-semibold text-3xl text-gray-800">TodoBee</div>
-
-          {/* Hamburger Menu (Mobile) */}
+        {/* Logo & Hamburger */}
+        <div className="flex items-center justify-between w-full md:w-auto">
+          <div className="font-semibold text-3xl text-yellow-400">TodoBee</div>
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 focus:outline-none"
+              className="text-white focus:outline-none"
             >
               <svg
                 className="w-6 h-6"
@@ -41,42 +40,75 @@ function Navbar() {
               </svg>
             </button>
           </div>
-
-          {/* Navigation Links */}
-          <div className="hidden md:flex space-x-6">
-            <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-6 items-center ml-10">
+            <Link
+              to="/"
+              className="text-white hover:text-yellow-400 transition"
+            >
               Home
             </Link>
-            <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              to="/about"
+              className="text-white hover:text-yellow-400 transition"
+            >
               About
             </Link>
-            <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link
+              to="/contact"
+              className="text-white hover:text-yellow-400 transition"
+            >
               Contact
             </Link>
           </div>
         </div>
+
+        {/* Desktop Buttons */}
         <div className="hidden md:flex space-x-2">
-          <Link to="/login" className="bg-blue-600 text-white px-4 py-1 rounded-sm hover:bg-blue-700 transition-colors">
+          <Link
+            to="/login"
+            className="bg-yellow-400 text-white px-4 py-1 rounded-sm hover:bg-yellow-500 transition"
+          >
             Login
           </Link>
-          <Link to="/register" className="bg-gray-600 text-white px-4 py-1 rounded-sm hover:bg-gray-700 transition-colors">
+          <Link
+            to="/register"
+            className="bg-gray-600 text-white px-4 py-1 rounded-sm hover:bg-gray-700 transition"
+          >
             Daftar
           </Link>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden px-6 pb-4 space-y-2">
-          <a href="#" className="block text-gray-700">
+        <div className="md:hidden bg-gray-900 px-6 py-4 space-y-3">
+          <Link to="/" className="block text-white hover:text-yellow-400">
             Home
-          </a>
-          <a href="#" className="block text-gray-700">
+          </Link>
+          <Link to="/about" className="block text-white hover:text-yellow-400">
             About
-          </a>
-          <a href="#" className="block text-gray-700">
+          </Link>
+          <Link
+            to="/contact"
+            className="block text-white hover:text-yellow-400"
+          >
             Contact
-          </a>
+          </Link>
+          <div className="flex flex-col pt-1">
+            <Link
+              to="/login"
+              className="flex-1 text-center bg-yellow-400 text-white px-4 py-2 rounded-sm hover:bg-yellow-500 transition"
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="flex-1 mt-4 text-center bg-gray-600 text-white px-4 py-2 rounded-sm hover:bg-gray-700 transition"
+            >
+              Daftar
+            </Link>
+          </div>
         </div>
       )}
     </nav>

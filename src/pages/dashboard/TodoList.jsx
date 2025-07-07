@@ -16,10 +16,61 @@ function TodoList() {
     image: null,
   });
 
-  const { task, getTask, storeTask, clearMessage, deleteTask } =
-    TaskController();
-
   const { payWithMidtrans } = PaymentController();
+
+  const {
+    task,
+    getTask,
+    storeTask,
+    clearMessage,
+    deleteTask,
+    statusDone,
+    statusPending,
+  } = TaskController();
+
+  const handleStoreTask = async (e) => {
+    e.preventDefault();
+
+    Swal.fire({
+      title: editId ? "Menyimpan perubahan..." : "Menyimpan...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) => {
+      if (value) formData.append(key, value);
+    });
+
+    try {
+      await storeTask(formData, null, editId);
+      await getTask();
+      setForm({
+        title: "",
+        description: "",
+        deadline: "",
+        video: "",
+        image: null,
+      });
+      setEditId(null);
+      setModal(false);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: editId
+          ? "Perubahan berhasil disimpan"
+          : "Todo berhasil ditambahkan",
+      });
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Terjadi kesalahan saat menyimpan task.",
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,7 +106,7 @@ function TodoList() {
 
   const openAddModal = () => {
     const isPremium = localStorage.getItem("user_status") === "premium";
-    if (!isPremium && task.length >= 4) {
+    if (!isPremium && task.length >= 2) {
       Swal.fire({
         title: "Upgrade ke Premium",
         text: "Akun gratis hanya bisa menambahkan 4 todo. Upgrade ke premium sekarang?",
@@ -93,52 +144,6 @@ function TodoList() {
       image: null,
     });
     setModal(true);
-  };
-
-  const handleStoreTask = async (e) => {
-    e.preventDefault();
-
-    Swal.fire({
-      title: editId ? "Menyimpan perubahan..." : "Menyimpan...",
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      if (value) formData.append(key, value);
-    });
-
-    try {
-      await storeTask(formData, null, editId);
-      await getTask();
-
-      setForm({
-        title: "",
-        description: "",
-        deadline: "",
-        video: "",
-        image: null,
-      });
-      setEditId(null);
-      setModal(false);
-
-      Swal.fire({
-        icon: "success",
-        title: "Berhasil",
-        text: editId
-          ? "Perubahan berhasil disimpan"
-          : "Todo berhasil ditambahkan",
-      });
-    } catch {
-      Swal.fire({
-        icon: "error",
-        title: "Gagal",
-        text: "Terjadi kesalahan saat menyimpan task.",
-      });
-    }
   };
 
   const handleDelete = async (id) => {
@@ -180,64 +185,111 @@ function TodoList() {
     }
   };
 
+  const handleStatusDone = async (id) => {
+    Swal.fire({
+      title: "Mengubah status...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    try {
+      await statusDone(id);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Status berhasil diubah",
+      });
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Terjadi kesalahan.",
+      });
+    }
+  };
+
+  const handleStatusPending = async (id) => {
+    Swal.fire({
+      title: "Mengubah status...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+    try {
+      await statusPending(id);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Status talah diubah",
+      });
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Terjadi kesalahan.",
+      });
+    }
+  };
+
   return (
     <>
-      <div className="bg-white mb-6 py-5 px-5 rounded-md">
-        <h1 className="font-bold text-2xl text-gray-600">Todo List</h1>
+      <div className="bg-gray-900 mb-6 py-5 px-5 rounded-md">
+        <h1 className="font-bold text-2xl text-white">Todo List</h1>
       </div>
 
       <button
-        className="font-medium bg-blue-600 hover:bg-blue-700 text-white text-lg px-4 py-2 rounded-md"
+        className="font-medium bg-yellow-400 hover:bg-yellow-500 text-white text-lg px-4 py-2 rounded-md"
         onClick={() => openAddModal()}
       >
         Tambah Todo
       </button>
       {modal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-6">
           <div
-            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+            className="bg-gray-900 rounded-lg shadow-lg p-6 w-full max-w-md"
             data-aos="fade-up"
             data-aos-duration="500"
           >
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="text-xl text-white font-bold mb-4">
               {editId ? "Edit Todo" : "Tambah Todo"}
             </h2>
             <form onSubmit={handleStoreTask}>
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">Judul</label>
+                <label className="block text-white mb-1">Judul</label>
                 <input
                   type="text"
                   name="title"
                   value={form.title}
                   onChange={handleChange}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-white text-white px-3 py-2 rounded"
                   required
                 />
               </div>
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">Deskripsi</label>
+                <label className="block text-white mb-1">Deskripsi</label>
                 <textarea
                   name="description"
                   value={form.description}
                   onChange={handleChange}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-white text-white px-3 py-2 rounded"
                   rows="3"
                   required
                 ></textarea>
               </div>
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">Deadline</label>
+                <label className="block text-white mb-1">Deadline</label>
                 <input
                   type="date"
                   value={form.deadline}
                   onChange={handleChange}
                   name="deadline"
-                  className="w-full border px-3 py-2 rounded"
-                  required
+                  className="w-full text-white border border-white text-white px-3 py-2 rounded"
                 />
               </div>
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">
+                <label className="block text-white mb-1">
                   Gambar (opsional)
                 </label>
                 <input
@@ -245,11 +297,11 @@ function TodoList() {
                   name="image"
                   onChange={handleChange}
                   accept="image/*"
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-white text-white px-3 py-2 rounded"
                 />
               </div>
               <div className="mb-3">
-                <label className="block text-gray-600 mb-1">
+                <label className="block text-white mb-1">
                   Link Video YouTube (opsional)
                 </label>
                 <input
@@ -257,7 +309,7 @@ function TodoList() {
                   name="video"
                   value={form.video}
                   onChange={handleChange}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border border-white text-white px-3 py-2 rounded"
                 />
               </div>
               <div className="flex justify-end gap-3 mt-4">
@@ -270,7 +322,7 @@ function TodoList() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                  className="px-4 py-2 rounded bg-yellow-400 text-white hover:bg-yellow-500"
                 >
                   Simpan
                 </button>
@@ -281,59 +333,86 @@ function TodoList() {
       )}
 
       {loading ? (
-        <div className="bg-white py-8 px-6 rounded-md text-center mt-6">
+        <div className="bg-gray-900 py-8 px-6 rounded-md text-center mt-6">
           <span className="loading loading-spinner text-primary text-3xl"></span>
           <p className="text-gray-500 mt-4 text-sm">Sedang memuat data...</p>
         </div>
       ) : task.length === 0 ? (
-        <div className="bg-white py-8 px-6 rounded-md text-center mt-6">
-          <p className="text-gray-600 text-sm">Belum ada todo.</p>
+        <div className="bg-gray-900 py-8 px-6 rounded-md text-center mt-6">
+          <p className="text-white text-sm">Belum ada todo.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-3 mt-6 gap-6">
+        <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-6 gap-6">
           {task.map((task) => (
             <div
               key={task.id}
-              className="bg-white rounded-lg p-4 hover:shadow-md cursor-pointer"
+              className="bg-gray-900 rounded-lg p-4 hover:shadow-md cursor-pointer"
               data-aos="fade-up"
             >
               <div className="flex justify-between">
                 <Link
                   to={`/todo-list-detail/${task.id}`}
-                  className="text-xl font-semibold mb-1 hover:underline w-full"
+                  className="text-xl font-semibold mb-1 text-white hover:underline w-full"
                 >
                   {task.title}
                 </Link>
 
-                <div className="flex space-x-2">
+                <div className="flex space-x-3">
                   <button
-                    className="text-lg font-medium text-primary hover:underline"
+                    className="text-lg font-medium text-primary hover:underline hover:cursor-pointer"
                     onClick={() => openEditModal(task)}
                   >
                     <i className="fa-regular fa-pen-to-square"></i>
                   </button>
                   <button
-                    className="text-lg font-medium text-red-600 hover:underline"
+                    className="text-lg font-medium text-red-600 hover:underline hover:cursor-pointer"
                     onClick={() => handleDelete(task.id)}
                   >
                     <i className="fa-regular fa-trash"></i>
                   </button>
+
+                  <div className="dropdown dropdown-top">
+                    <div
+                      tabIndex={0}
+                      role="button"
+                      className="m-1 text-lg font-medium text-white hover:underline"
+                    >
+                      <i className="fa-regular fa-bars"></i>
+                    </div>
+                    <ul
+                      tabIndex={0}
+                      className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                    >
+                      {task.status === "pending" ? (
+                        <li>
+                          <button onClick={() => handleStatusDone(task.id)}>
+                            Tandai telah selesai
+                          </button>
+                        </li>
+                      ) : (
+                        <li>
+                          <button onClick={() => handleStatusPending(task.id)}>
+                            Tandai belum selesai
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
                 </div>
               </div>
-
               <Link to={`/todo-list-detail/${task.id}`}>
-                <p className="text-gray-600 text-sm mb-2 line-clamp-2">
+                <p className="text-gray-200 text-sm mb-2 line-clamp-2">
                   {task.description}
                 </p>
                 <span
                   className={`inline-block px-2 py-1 text-xs font-medium rounded
           ${
-            task.completed
+            task.status === "done"
               ? "bg-green-100 text-green-600"
               : "bg-yellow-100 text-yellow-600"
           }`}
                 >
-                  {task.completed ? "Selesai" : "Belum Selesai"}
+                  {task.status === "done" ? "Sudah Selesai" : "Belum Selesai"}
                 </span>
 
                 {task.video && extractYouTubeId(task.video) ? (
@@ -354,7 +433,18 @@ function TodoList() {
                     alt="Preview"
                     className="mt-3 w-full h-48 object-cover rounded"
                   />
-                ) : null}
+                ) : (
+                  <img
+                    src="/public/default-featured-image.png.jpg"
+                    alt="Preview"
+                    className="mt-3 w-full h-48 object-cover rounded"
+                  />
+                )}
+                <div>
+                  <small className="text-gray-200">
+                    Deadline : {task.deadline}
+                  </small>
+                </div>
               </Link>
             </div>
           ))}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
+import AuthController from "./AuthController";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -31,13 +32,23 @@ const PaymentController = () => {
 
       if (window.snap) {
         window.snap.pay(snapToken, {
-          onSuccess: (result) => {
+          onSuccess: async (result) => {
             console.log("Pembayaran sukses", result);
+
             Swal.fire({
               icon: "success",
               title: "Berhasil",
-              text: "Pembayaran berhasil. Terima kasih!",
-            }).then(() => window.location.reload());
+              text: "Pembayaran berhasil. Invoice akan segera didownload!",
+            }).then(() => {
+              const orderId = result.order_id;
+
+              window.open(`${baseUrl}/invoice/download/${orderId}`, "_blank");
+
+              const { logout } = AuthController.getState();
+              logout();
+
+              window.location.href = "/login";
+            });
           },
           onPending: (result) => {
             console.log("Menunggu pembayaran", result);

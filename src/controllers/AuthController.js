@@ -4,8 +4,10 @@ import { create } from "zustand";
 const baseUrl = import.meta.env.VITE_API_URL;
 const savedToken = localStorage.getItem("token");
 const savedUserRaw = localStorage.getItem("user");
-const savedUser = savedUserRaw && savedUserRaw !== "undefined" ? JSON.parse(savedUserRaw) : null;
-
+const savedUser =
+  savedUserRaw && savedUserRaw !== "undefined"
+    ? JSON.parse(savedUserRaw)
+    : null;
 
 const AuthController = create((set) => ({
   user: savedUser,
@@ -13,6 +15,24 @@ const AuthController = create((set) => ({
   error: null,
 
   setUser: (user) => set(() => ({ user })),
+
+  refreshUserStatus: async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(`${baseUrl}/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const user = res.data;
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("user_status", user.status);
+      set({ user });
+    } catch (err) {
+      console.error("Gagal memperbarui status user", err);
+    }
+  },
 
   login: async (email, password, navigate) => {
     try {
