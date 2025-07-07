@@ -234,7 +234,7 @@ function TodoListDetail() {
         Tambah Subtask
       </button>
       {isModalOpen && (
-        <div className="fixed px-6 inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div className="fixed px-6 inset-0 bg-black/40 flex backdrop-blur items-center justify-center z-50">
           <div
             className="bg-gray-900 p-6 rounded-md shadow-lg w-full max-w-md"
             data-aos="fade-up"

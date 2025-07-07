@@ -109,7 +109,7 @@ function TodoList() {
     if (!isPremium && task.length >= 2) {
       Swal.fire({
         title: "Upgrade ke Premium",
-        text: "Akun gratis hanya bisa menambahkan 4 todo. Upgrade ke premium sekarang?",
+        text: "Akun gratis hanya bisa menambahkan 2 todo. Upgrade ke premium sekarang hanya Rp125.000",
         icon: "info",
         showCancelButton: true,
         confirmButtonText: "Bayar Sekarang",
@@ -246,7 +246,7 @@ function TodoList() {
         Tambah Todo
       </button>
       {modal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-6">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-6 backdrop-blur">
           <div
             className="bg-gray-900 rounded-lg shadow-lg p-6 w-full max-w-md"
             data-aos="fade-up"
@@ -371,7 +371,7 @@ function TodoList() {
                     <i className="fa-regular fa-trash"></i>
                   </button>
 
-                  <div className="dropdown dropdown-top">
+                  <div className="dropdown dropdown-end">
                     <div
                       tabIndex={0}
                       role="button"
@@ -381,16 +381,16 @@ function TodoList() {
                     </div>
                     <ul
                       tabIndex={0}
-                      className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                      className="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow-sm"
                     >
                       {task.status === "pending" ? (
-                        <li>
+                        <li className="text-green-600">
                           <button onClick={() => handleStatusDone(task.id)}>
                             Tandai telah selesai
                           </button>
                         </li>
                       ) : (
-                        <li>
+                        <li className="text-yellow-600">
                           <button onClick={() => handleStatusPending(task.id)}>
                             Tandai belum selesai
                           </button>

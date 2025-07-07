@@ -41,9 +41,9 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-      <div className="bg-gray-900 shadow-lg w-5xl grid grid-cols-2 rounded-3xl">
-        <div className="bg-gray-800 rounded-l-3xl flex justify-center items-center">
+    <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
+      <div className="bg-gray-900 shadow-lg w-5xl grid md:grid-cols-2 grid-cols-1 md:rounded-3xl rounded-xl">
+        <div className="bg-gray-800 rounded-l-3xl hidden md:flex justify-center items-center">
           <Link to="/" className="text-6xl text-white font-bold">
             Todobee
           </Link>
